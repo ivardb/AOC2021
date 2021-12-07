@@ -6,7 +6,7 @@ def calc_fuel(target):
 
 
 def calc_fuel2(target):
-    return sum(map(lambda x: sum(range(abs(target - x) + 1)), positions))
+    return sum(map(lambda x: (abs(target - x) * (abs(target - x)+1))//2, positions))
 
 
 def find_optimum(low, high, calc_fuel):
