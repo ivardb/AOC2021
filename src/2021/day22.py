@@ -1,5 +1,3 @@
-from typing import List
-
 from aocd import lines
 import re
 
@@ -26,15 +24,16 @@ class Cube:
         # total disjoint
         if self.xs > other.xe or self.xe < other.xs or self.ys > other.ye or self.ye < other.ys or self.zs > other.ze or self.ze < other.zs:
             return [self]
-        topCube = Cube(self.xs, self.xe, self.ys, self.ye, other.ze + 1, self.ze)
-        bottomCube = Cube(self.xs, self.xe, self.ys, self.ye, self.zs, other.zs - 1)
-        frontCube = Cube(self.xs, self.xe, self.ys, other.ys - 1, max(other.zs, self.zs), min(self.ze, other.ze))
-        backCube = Cube(self.xs, self.xe, other.ye + 1, self.ye, max(other.zs, self.zs), min(self.ze, other.ze))
-        leftCube = Cube(self.xs, other.xs - 1, max(other.ys, self.ys), min(self.ye, other.ye), max(other.zs, self.zs),
-                        min(self.ze, other.ze))
-        rightCube = Cube(other.xe + 1, self.xe, max(other.ys, self.ys), min(self.ye, other.ye), max(other.zs, self.zs),
+        top_cube = Cube(self.xs, self.xe, self.ys, self.ye, other.ze + 1, self.ze)
+        bottom_cube = Cube(self.xs, self.xe, self.ys, self.ye, self.zs, other.zs - 1)
+        front_cube = Cube(self.xs, self.xe, self.ys, other.ys - 1, max(other.zs, self.zs), min(self.ze, other.ze))
+        back_cube = Cube(self.xs, self.xe, other.ye + 1, self.ye, max(other.zs, self.zs), min(self.ze, other.ze))
+        left_cube = Cube(self.xs, other.xs - 1, max(other.ys, self.ys), min(self.ye, other.ye), max(other.zs, self.zs),
                          min(self.ze, other.ze))
-        return [cube for cube in (topCube, bottomCube, frontCube, backCube, leftCube, rightCube) if cube.is_valid()]
+        right_cube = Cube(other.xe + 1, self.xe, max(other.ys, self.ys), min(self.ye, other.ye), max(other.zs, self.zs),
+                          min(self.ze, other.ze))
+        return [cube for cube in (top_cube, bottom_cube, front_cube, back_cube, left_cube, right_cube) if
+                cube.is_valid()]
 
     def __str__(self):
         if self.is_valid():
@@ -43,17 +42,13 @@ class Cube:
 
 
 if __name__ == "__main__":
-    activeCubes: List[Cube] = []
+    activeCubes = []
     lineRegex = r"(on|off) x=(-?\d*)..(-?\d*),y=(-?\d*)..(-?\d*),z=(-?\d*)..(-?\d*)"
     part1 = True
     for line in lines:
-        on, xs, xe, ys, ye, zs, ze = re.match(lineRegex, line).groups()
-        xs = int(xs)
-        xe = int(xe)
-        ys = int(ys)
-        ye = int(ye)
-        zs = int(zs)
-        ze = int(ze)
+        groups = list(re.match(lineRegex, line).groups())
+        on = groups[0]
+        xs, xe, ys, ye, zs, ze = map(int, groups[1:])
         currentCube = Cube(xs, xe, ys, ye, zs, ze)
         if part1 and any(map(lambda x: abs(x) > 50, (xs, xe, ys, ye, zs, ze))):
             part1 = False
