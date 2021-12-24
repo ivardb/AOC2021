@@ -1,3 +1,10 @@
+def function(z, digit, zDivider, xAdd, yAdd):
+    m = (z % 26) + xAdd
+    z = z / zDivider
+    if m != digit:
+        z = 26 * z + digit + yAdd
+    return z
+
 if __name__ == "__main__":
     params = [(1, 25, 6), (1, 11, 12), (1, 15, 8), (26, -11, 7), (1, 15, 7), (1, 15, 12), (1, 14, 2), (26, -7, 15), (1, 12, 4), (26, -6, 5), (26, -10, 12), (26, -15, 11), (26, -9, 13), (26, 0, 7)]
     possible = []
